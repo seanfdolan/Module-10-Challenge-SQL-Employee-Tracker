@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
-import { Pool, QueryResult } from 'pg';
-import { pool, connectToDb} from './db/connections.ts';
+import { QueryResult } from 'pg';
+import { pool, connectToDb} from './src/db/connections.ts';
 
 await connectToDb();
 
@@ -81,10 +81,9 @@ app.delete('/employees/:id', (req, res) => {
         res.json(result);
     });
 });
-app.get('/employees/:id', (req, res) => {
-    const sql = 'SELECT employees.last_name AS employee FROM employees WHERE id = $1';
-    const params = [req.params.id];
-    pool.query(sql, params, (err: Error, result: QueryResult) => {
+app.get('/employees/:id', (_req, res) => {
+    const sql = 'SELECT employees.last_name AS employee FROM department.name';
+    pool.query(sql, (err: Error, result: QueryResult) => {
         if (err) {
             res.status(500).json({error: err.message});
             return;
@@ -106,6 +105,18 @@ app.put('/departments/:id', (req, res) => {
         res.json(result);
     });
 });
+app.put('/managers/:id', (req, res) => {
+    const sql = 'UPDATE managers SET name = $1 WHERE id = $2';
+    const params = [req.body.name, req.params.id];
+    pool.query(sql, params, (err: Error, result: QueryResult) => {
+        if (err) {
+            res.status(500).json({error: err.message});
+            return;
+        }
+        res.json(result);
+    });
+});
+
 app.put('/managers/:id', (req, res) => {
     const sql = 'UPDATE managers SET name = $1 WHERE id = $2';
     const params = [req.body.name, req.params.id];
