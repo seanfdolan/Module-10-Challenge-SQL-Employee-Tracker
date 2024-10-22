@@ -1,12 +1,19 @@
-const inquirer = 'inquirer';
-const db = './db/connection';
+// const inquirer = 'inquirer';
+// const { connect } = require('http2');
+//const {connectToDb} = require('./db/connection');
 // const { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment, addRole, addEmployee, updateEmployeeRole, viewDepartmentBudget, logOut } = require('./utils/queries');
 
-db.connection(err => {
-    if (err) throw err;
-    console.log('Database connected.');
-    employee_tracker();
-});
+
+import inquirer from 'inquirer';    
+import {pool as db,connectToDb} from './db/connections.js';
+
+connectToDb()
+
+// db.connection(err => {
+//     if (err) throw err;
+//     console.log('Database connected.');
+//     employee_tracker();
+// });
 
 const employee_tracker = () => {
     inquirer.prompt([{
@@ -283,3 +290,4 @@ const employee_tracker = () => {
     });
 };
 
+employee_tracker();
